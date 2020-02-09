@@ -18,6 +18,28 @@ sealed trait Stream[+A] {
     }
   }
 
+  def take(n: Int): Stream[A] = {
+    if (n == 0) Empty else this match {
+      case Empty => Empty
+      case Cons(head, tail) => Cons(head, () => tail().take(n-1))
+    }
+  }
+
+  def drop(n: Int): Stream[A] = {
+    if (n == 0) this else this match {
+      case Empty => Empty
+      case Cons(_, tail) => tail().drop(n-1)
+    }
+  }
+
+  def takeWhile(p: A => Boolean): Stream[A] = {
+    this match {
+      case Empty => Empty
+      case Cons(head, tail) if p(head()) => Cons(head, () => tail().takeWhile(p))
+      case Cons(head, _) if !p(head()) => Empty
+    }
+  }
+
 }
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
