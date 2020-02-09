@@ -1,10 +1,12 @@
-package fp
+package fp.option
+
+import fp.list._
 
 object OptionUtil {
 
   def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f
 
-  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): fp.Option[C] = {
+  def map2[A,B,C](a: Option[A], b: Option[B])(f: (A, B) => C): Option[C] = {
     a.flatMap(av => b.map(bv => f(av, bv)))
   }
 

@@ -1,6 +1,4 @@
-package fp
-
-import fp.stream._
+package fp.stream
 
 object StreamTest {
 

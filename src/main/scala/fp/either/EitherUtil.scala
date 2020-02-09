@@ -1,4 +1,6 @@
-package fp
+package fp.either
+
+import fp.list._
 
 object EitherUtil {
 

@@ -1,8 +1,6 @@
 package fp.stream
 
-import fp.Option
-import fp.Some
-import fp.None
+import fp.option._
 
 sealed trait Stream[+A] {
 

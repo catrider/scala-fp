@@ -1,4 +1,4 @@
-package fp
+package fp.either
 
 sealed trait Either[+E, +A] {
   def map[B](f: A => B): Either[E, B]

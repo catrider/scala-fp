@@ -1,4 +1,4 @@
-package fp
+package fp.list
 
 sealed trait List[+A]
 case object Nil extends List[Nothing]

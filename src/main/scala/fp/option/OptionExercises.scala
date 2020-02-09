@@ -1,4 +1,4 @@
-package fp
+package fp.option
 
 object OptionExcercises {
 
