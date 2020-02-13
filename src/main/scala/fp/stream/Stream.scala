@@ -52,10 +52,21 @@ sealed trait Stream[+A] {
   }
 
   def map[B](f: A => B): Stream[B] = {
-    foldRight(Empty:Stream[B])((nextEl, transformedStream) => Cons(() => f(nextEl), () => transformedStream))
+    foldRight(Empty: Stream[B])((nextEl, transformedStream) => Cons(() => f(nextEl), () => transformedStream))
+  }
+
+  def append[B >: A](s: => Stream[B]): Stream[B] = {
+    def _append[B >: A](s1: Stream[B], s2: Stream[B]): Stream[B] = {
+      s1 match {
+        case Empty => s2
+        case Cons(h, t) => Cons(h, () => _append(t(), s2))
+      }
+    }
+    _append(this, s)
   }
 
 }
+
 case object Empty extends Stream[Nothing]
 case class Cons[+A](h: () => A, t: () => Stream[A]) extends Stream[A]
 

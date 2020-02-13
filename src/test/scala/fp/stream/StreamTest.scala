@@ -39,4 +39,8 @@ class StreamTest extends FunSuite {
     assert(Stream(1, 2, 3, 4, 5).map(x => x % 2 == 1).toList == Stream(true, false, true, false, true).toList)
   }
 
+  test("append") {
+    assert(Stream(1, 2, 3, 4, 5).append(Stream(6, 7, 8)).toList == Stream(1, 2, 3, 4, 5, 6, 7, 8).toList)
+  }
+
 }
