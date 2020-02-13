@@ -21,19 +21,19 @@ sealed trait Stream[+A] {
   def take(n: Int): Stream[A] = {
     if (n == 0) Empty else this match {
       case Empty => Empty
-      case Cons(head, tail) => Cons(head, () => tail().take(n-1))
+      case Cons(head, tail) => Cons(head, () => tail().take(n - 1))
     }
   }
 
   def drop(n: Int): Stream[A] = {
     if (n == 0) this else this match {
       case Empty => Empty
-      case Cons(_, tail) => tail().drop(n-1)
+      case Cons(_, tail) => tail().drop(n - 1)
     }
   }
 
   def takeWhile(p: A => Boolean): Stream[A] = {
-    foldRight(Empty:Stream[A])((a, b) => if (p(a)) Cons(() => a, () => b) else Empty)
+    foldRight(Empty: Stream[A])((a, b) => if (p(a)) Cons(() => a, () => b) else Empty)
   }
 
   def exists(p: A => Boolean): Boolean = {
