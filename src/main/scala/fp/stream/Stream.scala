@@ -33,11 +33,26 @@ sealed trait Stream[+A] {
   }
 
   def takeWhile(p: A => Boolean): Stream[A] = {
+    foldRight(Empty:Stream[A])((a, b) => if (p(a)) Cons(() => a, () => b) else Empty)
+  }
+
+  def exists(p: A => Boolean): Boolean = {
+    foldRight(false)((a, b) => p(a) || b)
+  }
+
+  def foldRight[B](z: => B)(f: (A, => B) => B): B = {
     this match {
-      case Empty => Empty
-      case Cons(head, tail) if p(head()) => Cons(head, () => tail().takeWhile(p))
-      case Cons(head, _) if !p(head()) => Empty
+      case Cons(h, t) => f(h(), t().foldRight(z)(f))
+      case _ => z
     }
+  }
+
+  def forAll(p: A => Boolean): Boolean = {
+    foldRight(true)((a, b) => p(a) && b)
+  }
+
+  def map[B](f: A => B): Stream[B] = {
+    foldRight(Empty:Stream[B])((nextEl, transformedStream) => Cons(() => f(nextEl), () => transformedStream))
   }
 
 }
