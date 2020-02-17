@@ -56,13 +56,7 @@ sealed trait Stream[+A] {
   }
 
   def append[B >: A](s: => Stream[B]): Stream[B] = {
-    def _append[B >: A](s1: Stream[B], s2: Stream[B]): Stream[B] = {
-      s1 match {
-        case Empty => s2
-        case Cons(h, t) => Cons(h, () => _append(t(), s2))
-      }
-    }
-    _append(this, s)
+    foldRight(s)((h, t) => Stream.cons(h, t))
   }
 
   def filter(f: A => Boolean): Stream[A] = {
