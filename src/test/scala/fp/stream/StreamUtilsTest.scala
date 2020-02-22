@@ -30,5 +30,15 @@ class StreamUtilsTest extends FunSuite {
   test("fromUnfold") {
     assert(StreamUtils.fromUnfold(8).take(8).toList == List(8, 9, 10, 11, 12, 13, 14, 15))
   }
+  test("fibsUnfold") {
+    assert(StreamUtils.fibsUnfold().take(1).toList == List(0))
+    assert(StreamUtils.fibsUnfold().take(2).toList == List(0, 1))
+    assert(StreamUtils.fibsUnfold().take(3).toList == List(0, 1, 1))
+    assert(StreamUtils.fibsUnfold().take(4).toList == List(0, 1, 1, 2))
+    assert(StreamUtils.fibsUnfold().take(5).toList == List(0, 1, 1, 2, 3))
+    assert(StreamUtils.fibsUnfold().take(6).toList == List(0, 1, 1, 2, 3, 5))
+    assert(StreamUtils.fibsUnfold().take(7).toList == List(0, 1, 1, 2, 3, 5, 8))
+    assert(StreamUtils.fibsUnfold().take(8).toList == List(0, 1, 1, 2, 3, 5, 8, 13))
+  }
 
 }

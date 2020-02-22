@@ -33,7 +33,15 @@ object StreamUtils {
   }
 
   def fromUnfold(n: Int): Stream[Int] = {
-    unfold(n)(lastEl => Some(lastEl + 1, lastEl + 1))
+    unfold(n - 1)(lastEl => Some(lastEl + 1, lastEl + 1))
+  }
+
+  def fibsUnfold() = {
+    cons(0, cons(1, unfold((0, 1))(lastTwoNumbers => {
+      val (secondMostRecentNumber, mostRecentNumber) = lastTwoNumbers
+      val newNumber = mostRecentNumber + secondMostRecentNumber
+      Some(newNumber, (mostRecentNumber, newNumber))
+    })))
   }
 
 }
