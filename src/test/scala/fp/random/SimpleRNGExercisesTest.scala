@@ -17,4 +17,22 @@ class SimpleRNGExercisesTest extends FunSuite {
       .forAll(i => i >= 0 && i <= 1))
   }
 
+  test("intDouble") {
+    assert(unfold(SimpleRNG(4):RNG)(rng => Some(SimpleRNGExercises.intDouble(rng)))
+      .take(100)
+      .forAll(result => {
+        val (i, d) = result
+        i >= 0 && d >= 0 && d <= 1
+      }))
+  }
+
+  test("doubleInt") {
+    assert(unfold(SimpleRNG(4):RNG)(rng => Some(SimpleRNGExercises.doubleInt(rng)))
+      .take(100)
+      .forAll(result => {
+        val (d, i) = result
+        i >= 0 && d >= 0 && d <= 1
+      }))
+  }
+
 }
