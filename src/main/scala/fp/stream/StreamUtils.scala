@@ -20,11 +20,9 @@ object StreamUtils {
   }
 
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] = {
-    val nextElAndState = f(z)
-    if (nextElAndState.isDefined) {
-      cons(nextElAndState.get._1, unfold(nextElAndState.get._2)(f))
-    } else {
-      Empty
+    f(z) match {
+      case Some((nextEl, state)) => cons(nextEl, unfold(state)(f))
+      case None => Empty
     }
   }
 
@@ -33,7 +31,7 @@ object StreamUtils {
   }
 
   def fromUnfold(n: Int): Stream[Int] = {
-    unfold(n - 1)(lastEl => Some(lastEl + 1, lastEl + 1))
+    unfold(n)(lastEl => Some(lastEl, lastEl + 1))
   }
 
   def fibsUnfold() = {
