@@ -46,4 +46,31 @@ object SimpleRNGUtils {
     doubleRng(rng)
   }
 
+  def map2[A, B, C](ra: Rand[A], rb: Rand[B])(f: (A, B) => C): Rand[C] = {
+    rng => {
+      val (a, rng1) = ra(rng)
+      val (b, rng2) = rb(rng1)
+      val c = f(a, b)
+      (c, rng2)
+    }
+  }
+
+  def both[A, B](ra: Rand[A], rb: Rand[B]): Rand[(A, B)] = {
+    map2(ra, rb)((_, _))
+  }
+
+  def flatMap[A, B](f: Rand[A])(g: A => Rand[B]): Rand[B] = {
+    rng => {
+      val (a, r1) = f(rng)
+      g(a)(r1)
+    }
+  }
+
+  def nonNegativeLessThan(n: Int): Rand[Int] = {
+    flatMap(nonNegativeInt) { i =>
+      val mod = i % n
+      if (i + (n-1) - mod >= 0) unit(mod) else nonNegativeLessThan(n)
+    }
+  }
+
 }
